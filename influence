@@ -1,0 +1,40 @@
+import tweepy
+
+consumer_key = "rAezDfgG3lYjfbww4ez2NXbmi"
+consumer_secret = "6kV4MSWE92V3Bt9wiiYPyjHGLZCnRjVTWhusyEz60aYg4f2bYn"
+access_token = "1070694715476074496-3IDA1B5pGw5i2YEr0Fr2SM15jTuRMw"
+access_token_secret = "yIAzga2LYtOYFm0ep7wtaxX2FoqUGcIAgU4juNDYb52Jr"
+
+auth = tweepy.OAuthHandler("rAezDfgG3lYjfbww4ez2NXbmi", "6kV4MSWE92V3Bt9wiiYPyjHGLZCnRjVTWhusyEz60aYg4f2bYn")
+auth.set_access_token("1070694715476074496-3IDA1B5pGw5i2YEr0Fr2SM15jTuRMw",
+                      "yIAzga2LYtOYFm0ep7wtaxX2FoqUGcIAgU4juNDYb52Jr")
+
+api = tweepy.API(auth)
+
+screen_name = input("Enter Twitter Handle: ")
+
+y=[]
+x=[]
+z=[]
+
+
+users = tweepy.Cursor(api.followers, screen_name, count=2).items()
+for i in range(0, 2):
+    user = next(users)
+    y.append(user.followers_count)
+    x.append(user.screen_name)
+
+usersins = tweepy.Cursor(api.followers, x, count=2).items()
+for i in range(0, 2):
+    userin = next(usersins)
+    z.append(userin.followers_count)
+
+
+user = api.get_user(screen_name)
+
+print("\nTWITTER")
+print(user.name)
+print("1st degree of influence: " + "{:,d}".format(int(user.followers_count)))
+print("2nd degree of influence: " + "{:,d}".format(int(sum(y))))
+print("3rd degree of influence: " + "{:,d}".format(int(sum(x))))
+
